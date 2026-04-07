@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutterbase/app/di/service_locator.dart';
+import 'package:flutterbase/presentation/pages/add_points_page.dart';
+import 'package:flutterbase/presentation/pages/consume_points_page.dart';
+import 'package:flutterbase/presentation/pages/export_import_page.dart';
 import 'package:flutterbase/presentation/pages/main_page.dart';
 import 'package:flutterbase/presentation/pages/splash_page.dart';
 import 'package:flutterbase/presentation/pages/system/about_page.dart';
 import 'package:flutterbase/presentation/pages/system/debug_page.dart';
 import 'package:flutterbase/presentation/pages/system/licenses_page.dart';
 import 'package:flutterbase/presentation/pages/system/logs_page.dart';
+import 'package:flutterbase/presentation/pages/user_detail_page.dart';
 import 'package:flutterbase/shared/l10n/app_strings.dart';
 import 'package:flutterbase/shared/logging/app_logger.dart';
 
@@ -19,6 +23,10 @@ class AppRouter {
   static const String licenses = '/licenses';
   static const String debug = '/debug';
   static const String logs = '/logs';
+  static const String userDetail = '/user-detail';
+  static const String addPoints = '/add-points';
+  static const String consumePoints = '/consume-points';
+  static const String data = '/data';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     sl<AppLogger>().debug('[Router] → ${settings.name}');
@@ -45,6 +53,30 @@ class AppRouter {
         ),
       logs => MaterialPageRoute<void>(
           builder: (_) => const LogsPage(),
+          settings: settings,
+        ),
+      userDetail => MaterialPageRoute<void>(
+          builder: (_) {
+            final args = settings.arguments as Map<String, dynamic>;
+            return UserDetailPage(
+              userId: args['id'] as int,
+              userName: args['name'] as String,
+            );
+          },
+          settings: settings,
+        ),
+      addPoints => MaterialPageRoute<void>(
+          builder: (_) =>
+              AddPointsPage(userId: settings.arguments as int),
+          settings: settings,
+        ),
+      consumePoints => MaterialPageRoute<void>(
+          builder: (_) =>
+              ConsumePointsPage(userId: settings.arguments as int),
+          settings: settings,
+        ),
+      data => MaterialPageRoute<void>(
+          builder: (_) => const ExportImportPage(),
           settings: settings,
         ),
       _ => MaterialPageRoute<void>(

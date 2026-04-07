@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutterbase/app/di/service_locator.dart';
+import 'package:flutterbase/presentation/pages/users_page.dart';
 import 'package:flutterbase/presentation/viewmodels/debug_settings_viewmodel.dart';
+import 'package:flutterbase/presentation/viewmodels/export_import_viewmodel.dart';
 import 'package:flutterbase/presentation/viewmodels/theme_viewmodel.dart';
 import 'package:flutterbase/presentation/widgets/ui/widgets.dart';
 import 'package:flutterbase/shared/l10n/app_strings.dart';
@@ -20,14 +22,14 @@ class _MainPageState extends State<MainPage> {
 
   static const List<_TabItem> _tabs = [
     _TabItem(
-      label: AppStrings.navHome,
-      icon: Icons.home_outlined,
-      selectedIcon: Icons.home,
+      label: AppStrings.usersTitle,
+      icon: Icons.people_outlined,
+      selectedIcon: Icons.people,
     ),
     _TabItem(
-      label: AppStrings.navSearch,
-      icon: Icons.search_outlined,
-      selectedIcon: Icons.search,
+      label: AppStrings.dataTitle,
+      icon: Icons.import_export_outlined,
+      selectedIcon: Icons.import_export,
     ),
     _TabItem(
       label: AppStrings.navSettings,
@@ -73,8 +75,8 @@ class _MainPageState extends State<MainPage> {
             headerSubtitle: AppStrings.drawerSubtitle,
             items: [
               AppDrawerItem(
-                label: AppStrings.navHome,
-                icon: Icons.home_outlined,
+                label: AppStrings.usersTitle,
+                icon: Icons.people_outlined,
                 isSelected: _selectedIndex == 0,
                 onTap: () {
                   setState(() => _selectedIndex = 0);
@@ -82,8 +84,8 @@ class _MainPageState extends State<MainPage> {
                 },
               ),
               AppDrawerItem(
-                label: AppStrings.navSearch,
-                icon: Icons.search_outlined,
+                label: AppStrings.dataTitle,
+                icon: Icons.import_export_outlined,
                 isSelected: _selectedIndex == 1,
                 onTap: () {
                   setState(() => _selectedIndex = 1);
@@ -161,10 +163,10 @@ class _MainPageState extends State<MainPage> {
 
   Widget _buildTabContent() {
     return switch (_selectedIndex) {
-      0 => const _HomeContent(),
-      1 => const _SearchContent(),
+      0 => const UsersPage(),
+      1 => const _DataContent(),
       2 => const _SettingsContent(),
-      _ => const _HomeContent(),
+      _ => const UsersPage(),
     };
   }
 }
@@ -259,6 +261,144 @@ class _SearchContent extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _DataContent extends StatefulWidget {
+  const _DataContent();
+
+  @override
+  State<_DataContent> createState() => _DataContentState();
+}
+
+class _DataContentState extends State<_DataContent> {
+  late final ExportImportViewModel _viewModel;
+  final _importPathController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = sl<ExportImportViewModel>();
+    _viewModel.addListener(_onChanged);
+  }
+
+  @override
+  void dispose() {
+    _viewModel.removeListener(_onChanged);
+    _importPathController.dispose();
+    super.dispose();
+  }
+
+  void _onChanged() => setState(() {});
+
+  Future<void> _doExport() async {
+    await _viewModel.exportData();
+    if (!mounted) return;
+    if (_viewModel.state == ExportImportState.success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              '${AppStrings.dataExportSuccess}: ${_viewModel.lastMessage}'),
+        ),
+      );
+      _viewModel.reset();
+    }
+  }
+
+  Future<void> _doImport() async {
+    final path = _importPathController.text.trim();
+    if (path.isEmpty) return;
+    await _viewModel.importData(path);
+    if (!mounted) return;
+    if (_viewModel.state == ExportImportState.success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text(_viewModel.lastMessage ?? AppStrings.dataImportSuccess),
+        ),
+      );
+      _viewModel.reset();
+    } else if (_viewModel.state == ExportImportState.error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_viewModel.error?.message ?? AppStrings.commonError),
+        ),
+      );
+      _viewModel.reset();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(AppSpacing.pageMargin),
+      children: [
+        AppSectionHeader(title: AppStrings.dataExportTitle),
+        const SizedBox(height: AppSpacing.sm),
+        AppCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppStrings.dataExportDesc,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              AppPrimaryButton(
+                label: _viewModel.state == ExportImportState.loading
+                    ? AppStrings.commonLoading
+                    : AppStrings.dataExportButton,
+                onPressed: _viewModel.state == ExportImportState.loading
+                    ? null
+                    : _doExport,
+                width: double.infinity,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xxl),
+        AppSectionHeader(title: AppStrings.dataImportTitle),
+        const SizedBox(height: AppSpacing.sm),
+        AppCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppStrings.dataImportDesc,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              TextFormField(
+                controller: _importPathController,
+                decoration: const InputDecoration(
+                  labelText: AppStrings.dataImportPathLabel,
+                  hintText: AppStrings.dataImportPathHint,
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              AppSecondaryButton(
+                label: _viewModel.state == ExportImportState.loading
+                    ? AppStrings.commonLoading
+                    : AppStrings.dataImportButton,
+                onPressed: _viewModel.state == ExportImportState.loading
+                    ? null
+                    : _doImport,
+                width: double.infinity,
+              ),
+            ],
+          ),
+        ),
+        if (_viewModel.state == ExportImportState.error)
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpacing.lg),
+            child: Text(
+              _viewModel.error?.message ?? AppStrings.commonError,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+      ],
     );
   }
 }
