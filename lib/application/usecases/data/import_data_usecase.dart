@@ -13,7 +13,7 @@ final class ImportDataUseCase {
   /// Import from [filePath]. Returns number of imported users.
   Future<int> execute(String filePath) async {
     final file = File(filePath);
-    if (!file.existsSync()) throw const FileNotFoundException();
+    if (!await file.exists()) throw const FileNotFoundException();
 
     final content = await file.readAsString();
     final data = jsonDecode(content) as Map<String, dynamic>;

@@ -144,8 +144,15 @@ class _ConsumePointsPageState extends State<ConsumePointsPage> {
     );
     if (time == null) return;
     setState(() {
-      _selectedDate =
-          DateTime(date.year, date.month, date.day, time.hour, time.minute);
+      _selectedDate = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        time.hour,
+        time.minute,
+        0,
+        0,
+      );
     });
   }
 
