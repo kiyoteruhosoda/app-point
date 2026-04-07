@@ -4,9 +4,9 @@ class AppStrings {
   AppStrings._();
 
   // ─── App ──────────────────────────────────────────────────────────────
-  static const String appName = 'FlutterBase';
+  static const String appName = 'Point Manager';
   static const String appDescription =
-      'Flutter base app following the DADS design system';
+      'Point accumulation and consumption management app';
 
   // ─── Navigation ───────────────────────────────────────────────────────
   static const String navHome = 'Home';
@@ -158,4 +158,52 @@ class AppStrings {
   static const String commonLoading = 'Loading...';
   static const String commonError = 'An error occurred';
   static const String commonEmpty = 'No data';
+  static const String commonCancel = 'Cancel';
+  static const String commonDelete = 'Delete';
+  static const String commonAdd = 'Add';
+  static const String commonSave = 'Save';
+
+  // ─── Users ───────────────────────────────────────────────────────────
+  static const String usersTitle = 'Users';
+  static const String usersEmpty = 'No users yet. Tap + to add one.';
+  static const String usersAdd = 'Add User';
+  static const String usersAddTitle = 'Add User';
+  static const String usersNameLabel = 'Name';
+  static const String usersNameHint = 'Enter user name';
+  static const String usersDeleteTitle = 'Delete User';
+  static const String usersDeleteBody = 'Delete user';
+  static const String pointBalance = 'Balance';
+
+  // ─── Points ───────────────────────────────────────────────────────────
+  static const String pointAdd = 'Add Points';
+  static const String pointConsume = 'Consume Points';
+  static const String pointHistoryEmpty = 'No point history yet.';
+  static const String pointDateTime = 'Date & Time';
+  static const String pointAmount = 'Points';
+  static const String pointAmountHint = 'e.g. 100';
+  static const String pointAmountError = 'Enter a positive number';
+  static const String pointReason = 'Reason';
+  static const String pointReasonHint = 'Why are points being added?';
+  static const String pointReasonError = 'Reason is required';
+  static const String pointApplication = 'Application';
+  static const String pointApplicationHint = 'Where were the points used?';
+  static const String pointApplicationError = 'Application is required';
+  static const String pointTag = 'Tag (optional)';
+  static const String pointTagHint = 'e.g. campaign, reward';
+
+  // ─── Data export/import ───────────────────────────────────────────────
+  static const String dataTitle = 'Data';
+  static const String dataExportTitle = 'Export';
+  static const String dataExportDesc =
+      'Export all users and point history to a JSON file in Documents.';
+  static const String dataExportButton = 'Export to JSON';
+  static const String dataExportSuccess = 'Exported to';
+  static const String dataImportTitle = 'Import';
+  static const String dataImportDesc =
+      'Import data from a previously exported JSON file.';
+  static const String dataImportPathLabel = 'File path';
+  static const String dataImportPathHint =
+      '/path/to/point_data_export.json';
+  static const String dataImportButton = 'Import from JSON';
+  static const String dataImportSuccess = 'Import successful';
 }
