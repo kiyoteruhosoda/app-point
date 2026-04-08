@@ -18,6 +18,23 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Validate required secrets
+        env:
+          FUNC_URL: ${{ secrets.FUNC_URL }}
+          FUNC_STOP_URL: ${{ secrets.FUNC_STOP_URL }}
+          FUNC_STATUS_URL: ${{ secrets.FUNC_STATUS_URL }}
+        run: |
+          MISSING=""
+          [ -z "$FUNC_URL" ] && MISSING="$MISSING FUNC_URL"
+          [ -z "$FUNC_STOP_URL" ] && MISSING="$MISSING FUNC_STOP_URL"
+          [ -z "$FUNC_STATUS_URL" ] && MISSING="$MISSING FUNC_STATUS_URL"
+          if [ -n "$MISSING" ]; then
+            echo "ERROR: Required secrets are not configured:$MISSING"
+            echo "Please set these secrets in GitHub repository settings."
+            exit 1
+          fi
+          echo "All required secrets are configured."
+
       - name: Stop any existing ACI Runner
         run: |
           echo "Stopping any previously running ACI runner..."
