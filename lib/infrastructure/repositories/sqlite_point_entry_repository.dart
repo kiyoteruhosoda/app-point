@@ -1,10 +1,10 @@
-import 'package:flutterbase/domain/entities/point_entry.dart';
-import 'package:flutterbase/domain/repositories/point_entry_repository.dart';
-import 'package:flutterbase/domain/value_objects/point_entry_id.dart';
-import 'package:flutterbase/domain/value_objects/user_id.dart';
-import 'package:flutterbase/infrastructure/db/sqlite/dao/point_entry_dao.dart';
-import 'package:flutterbase/infrastructure/db/sqlite/rows/point_entry_row.dart';
-import 'package:flutterbase/infrastructure/mappers/point_entry_mapper.dart';
+import 'package:rewardpoints/domain/entities/point_entry.dart';
+import 'package:rewardpoints/domain/repositories/point_entry_repository.dart';
+import 'package:rewardpoints/domain/value_objects/point_entry_id.dart';
+import 'package:rewardpoints/domain/value_objects/user_id.dart';
+import 'package:rewardpoints/infrastructure/db/sqlite/dao/point_entry_dao.dart';
+import 'package:rewardpoints/infrastructure/db/sqlite/rows/point_entry_row.dart';
+import 'package:rewardpoints/infrastructure/mappers/point_entry_mapper.dart';
 
 final class SqlitePointEntryRepository implements PointEntryRepository {
   const SqlitePointEntryRepository(this._dao);

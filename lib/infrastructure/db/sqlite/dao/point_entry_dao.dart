@@ -1,5 +1,5 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:flutterbase/infrastructure/db/sqlite/rows/point_entry_row.dart';
+import 'package:rewardpoints/infrastructure/db/sqlite/rows/point_entry_row.dart';
 
 final class PointEntryDao {
   const PointEntryDao(this._db);

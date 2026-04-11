@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutterbase/application/dto/consume_points_dto.dart';
-import 'package:flutterbase/application/usecases/points/consume_points_usecase.dart';
-import 'package:flutterbase/application/usecases/points/get_past_applications_usecase.dart';
-import 'package:flutterbase/shared/errors/app_error.dart';
+import 'package:rewardpoints/application/dto/consume_points_dto.dart';
+import 'package:rewardpoints/application/usecases/points/consume_points_usecase.dart';
+import 'package:rewardpoints/application/usecases/points/get_past_applications_usecase.dart';
+import 'package:rewardpoints/shared/errors/app_error.dart';
 
 enum ConsumePointsState { idle, loading, success, error }
 

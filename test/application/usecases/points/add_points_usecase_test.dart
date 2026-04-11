@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutterbase/application/dto/add_points_dto.dart';
-import 'package:flutterbase/application/dto/point_entry_dto.dart';
-import 'package:flutterbase/application/usecases/points/add_points_usecase.dart';
-import 'package:flutterbase/domain/entities/point_entry.dart';
-import 'package:flutterbase/domain/repositories/point_entry_repository.dart';
-import 'package:flutterbase/domain/value_objects/point_entry_id.dart';
-import 'package:flutterbase/domain/value_objects/user_id.dart';
+import 'package:rewardpoints/application/dto/add_points_dto.dart';
+import 'package:rewardpoints/application/dto/point_entry_dto.dart';
+import 'package:rewardpoints/application/usecases/points/add_points_usecase.dart';
+import 'package:rewardpoints/domain/entities/point_entry.dart';
+import 'package:rewardpoints/domain/repositories/point_entry_repository.dart';
+import 'package:rewardpoints/domain/value_objects/point_entry_id.dart';
+import 'package:rewardpoints/domain/value_objects/user_id.dart';
 
 // ─── Fake ─────────────────────────────────────────────────────────────────────
 

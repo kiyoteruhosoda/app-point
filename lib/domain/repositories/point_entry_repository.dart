@@ -1,6 +1,6 @@
-import 'package:flutterbase/domain/entities/point_entry.dart';
-import 'package:flutterbase/domain/value_objects/point_entry_id.dart';
-import 'package:flutterbase/domain/value_objects/user_id.dart';
+import 'package:rewardpoints/domain/entities/point_entry.dart';
+import 'package:rewardpoints/domain/value_objects/point_entry_id.dart';
+import 'package:rewardpoints/domain/value_objects/user_id.dart';
 
 abstract interface class PointEntryRepository {
   Future<List<PointEntry>> getByUserId(UserId userId);

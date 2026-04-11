@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterbase/shared/theme/theme.dart';
+import 'package:rewardpoints/shared/theme/theme.dart';
 
 /// DADS-compliant AppBar.
 class AppMainHeader extends StatelessWidget implements PreferredSizeWidget {

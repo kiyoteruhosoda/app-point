@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutterbase/application/dto/add_points_dto.dart';
-import 'package:flutterbase/application/usecases/points/add_points_usecase.dart';
-import 'package:flutterbase/application/usecases/points/get_past_reasons_usecase.dart';
-import 'package:flutterbase/shared/errors/app_error.dart';
+import 'package:rewardpoints/application/dto/add_points_dto.dart';
+import 'package:rewardpoints/application/usecases/points/add_points_usecase.dart';
+import 'package:rewardpoints/application/usecases/points/get_past_reasons_usecase.dart';
+import 'package:rewardpoints/shared/errors/app_error.dart';
 
 enum AddPointsState { idle, loading, success, error }
 

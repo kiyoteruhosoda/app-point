@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutterbase/app/di/service_locator.dart';
-import 'package:flutterbase/application/usecases/theme/get_theme_preference_usecase.dart';
-import 'package:flutterbase/application/usecases/theme/set_theme_preference_usecase.dart';
-import 'package:flutterbase/shared/logging/app_logger.dart';
-import 'package:flutterbase/shared/value_objects/app_theme_mode.dart';
+import 'package:rewardpoints/app/di/service_locator.dart';
+import 'package:rewardpoints/application/usecases/theme/get_theme_preference_usecase.dart';
+import 'package:rewardpoints/application/usecases/theme/set_theme_preference_usecase.dart';
+import 'package:rewardpoints/shared/logging/app_logger.dart';
+import 'package:rewardpoints/shared/value_objects/app_theme_mode.dart';
 
 /// Manages the app-wide [ThemeMode] and persists the user's choice via
 /// [GetThemePreferenceUseCase] / [SetThemePreferenceUseCase].

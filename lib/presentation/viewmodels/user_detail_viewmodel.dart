@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutterbase/application/dto/point_entry_dto.dart';
-import 'package:flutterbase/application/dto/update_point_entry_dto.dart';
-import 'package:flutterbase/application/usecases/points/delete_point_entry_usecase.dart';
-import 'package:flutterbase/application/usecases/points/get_point_balance_usecase.dart';
-import 'package:flutterbase/application/usecases/points/get_point_history_usecase.dart';
-import 'package:flutterbase/application/usecases/points/update_point_entry_usecase.dart';
-import 'package:flutterbase/shared/errors/app_error.dart';
+import 'package:rewardpoints/application/dto/point_entry_dto.dart';
+import 'package:rewardpoints/application/dto/update_point_entry_dto.dart';
+import 'package:rewardpoints/application/usecases/points/delete_point_entry_usecase.dart';
+import 'package:rewardpoints/application/usecases/points/get_point_balance_usecase.dart';
+import 'package:rewardpoints/application/usecases/points/get_point_history_usecase.dart';
+import 'package:rewardpoints/application/usecases/points/update_point_entry_usecase.dart';
+import 'package:rewardpoints/shared/errors/app_error.dart';
 
 enum UserDetailState { loading, loaded, empty, error }
 

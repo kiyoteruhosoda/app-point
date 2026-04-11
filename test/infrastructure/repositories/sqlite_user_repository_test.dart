@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:flutterbase/domain/value_objects/user_id.dart';
-import 'package:flutterbase/infrastructure/db/sqlite/dao/user_dao.dart';
-import 'package:flutterbase/infrastructure/db/sqlite/migrations/migration_v1.dart';
-import 'package:flutterbase/infrastructure/repositories/sqlite_user_repository.dart';
+import 'package:rewardpoints/domain/value_objects/user_id.dart';
+import 'package:rewardpoints/infrastructure/db/sqlite/dao/user_dao.dart';
+import 'package:rewardpoints/infrastructure/db/sqlite/migrations/migration_v1.dart';
+import 'package:rewardpoints/infrastructure/repositories/sqlite_user_repository.dart';
 
 void main() {
   sqfliteFfiInit();

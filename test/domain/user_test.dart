@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutterbase/domain/entities/user.dart';
-import 'package:flutterbase/domain/value_objects/user_id.dart';
+import 'package:rewardpoints/domain/entities/user.dart';
+import 'package:rewardpoints/domain/value_objects/user_id.dart';
 
 void main() {
   final createdAt = DateTime(2024, 1, 10);

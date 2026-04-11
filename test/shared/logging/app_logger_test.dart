@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutterbase/infrastructure/logging/persistent_app_logger.dart';
-import 'package:flutterbase/shared/logging/log_entry.dart';
-import 'package:flutterbase/shared/logging/log_level.dart';
+import 'package:rewardpoints/infrastructure/logging/persistent_app_logger.dart';
+import 'package:rewardpoints/shared/logging/log_entry.dart';
+import 'package:rewardpoints/shared/logging/log_level.dart';
 
 // PersistentAppLogger is tested directly (no init() call → file I/O is skipped,
 // but the in-memory buffer and console output work normally).

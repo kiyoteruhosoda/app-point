@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutterbase/app/di/service_locator.dart';
-import 'package:flutterbase/application/dto/point_entry_dto.dart';
-import 'package:flutterbase/application/dto/update_point_entry_dto.dart';
-import 'package:flutterbase/presentation/viewmodels/user_detail_viewmodel.dart';
-import 'package:flutterbase/presentation/widgets/ui/widgets.dart';
-import 'package:flutterbase/shared/l10n/app_strings.dart';
-import 'package:flutterbase/shared/theme/theme.dart';
+import 'package:rewardpoints/app/di/service_locator.dart';
+import 'package:rewardpoints/application/dto/point_entry_dto.dart';
+import 'package:rewardpoints/application/dto/update_point_entry_dto.dart';
+import 'package:rewardpoints/presentation/viewmodels/user_detail_viewmodel.dart';
+import 'package:rewardpoints/presentation/widgets/ui/widgets.dart';
+import 'package:rewardpoints/shared/l10n/app_strings.dart';
+import 'package:rewardpoints/shared/theme/theme.dart';
 
 class UserDetailPage extends StatefulWidget {
   const UserDetailPage({

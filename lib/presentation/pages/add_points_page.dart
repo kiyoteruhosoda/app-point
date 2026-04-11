@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutterbase/app/di/service_locator.dart';
-import 'package:flutterbase/presentation/viewmodels/add_points_viewmodel.dart';
-import 'package:flutterbase/presentation/widgets/ui/widgets.dart';
-import 'package:flutterbase/shared/l10n/app_strings.dart';
-import 'package:flutterbase/shared/theme/theme.dart';
+import 'package:rewardpoints/app/di/service_locator.dart';
+import 'package:rewardpoints/presentation/viewmodels/add_points_viewmodel.dart';
+import 'package:rewardpoints/presentation/widgets/ui/widgets.dart';
+import 'package:rewardpoints/shared/l10n/app_strings.dart';
+import 'package:rewardpoints/shared/theme/theme.dart';
 
 class AddPointsPage extends StatefulWidget {
   const AddPointsPage({super.key, required this.userId});

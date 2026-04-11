@@ -1,7 +1,7 @@
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:flutterbase/application/dto/app_info_dto.dart';
-import 'package:flutterbase/domain/repositories/app_info_repository.dart';
-import 'package:flutterbase/shared/build_info.dart';
+import 'package:rewardpoints/application/dto/app_info_dto.dart';
+import 'package:rewardpoints/domain/repositories/app_info_repository.dart';
+import 'package:rewardpoints/shared/build_info.dart';
 
 /// Retrieves app version from [PackageInfo] and build metadata from [BuildInfo].
 final class PackageInfoAppInfoRepository implements AppInfoRepository {

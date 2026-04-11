@@ -1,5 +1,5 @@
-import 'package:flutterbase/domain/repositories/point_entry_repository.dart';
-import 'package:flutterbase/domain/value_objects/user_id.dart';
+import 'package:rewardpoints/domain/repositories/point_entry_repository.dart';
+import 'package:rewardpoints/domain/value_objects/user_id.dart';
 
 final class GetPastReasonsUseCase {
   const GetPastReasonsUseCase(this._repo);

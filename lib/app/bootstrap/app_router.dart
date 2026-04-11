@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutterbase/app/di/service_locator.dart';
-import 'package:flutterbase/presentation/pages/add_points_page.dart';
-import 'package:flutterbase/presentation/pages/consume_points_page.dart';
-import 'package:flutterbase/presentation/pages/export_import_page.dart';
-import 'package:flutterbase/presentation/pages/main_page.dart';
-import 'package:flutterbase/presentation/pages/system/about_page.dart';
-import 'package:flutterbase/presentation/pages/system/debug_page.dart';
-import 'package:flutterbase/presentation/pages/system/licenses_page.dart';
-import 'package:flutterbase/presentation/pages/system/logs_page.dart';
-import 'package:flutterbase/presentation/pages/user_detail_page.dart';
-import 'package:flutterbase/shared/l10n/app_strings.dart';
-import 'package:flutterbase/shared/logging/app_logger.dart';
+import 'package:rewardpoints/app/di/service_locator.dart';
+import 'package:rewardpoints/presentation/pages/add_points_page.dart';
+import 'package:rewardpoints/presentation/pages/consume_points_page.dart';
+import 'package:rewardpoints/presentation/pages/export_import_page.dart';
+import 'package:rewardpoints/presentation/pages/main_page.dart';
+import 'package:rewardpoints/presentation/pages/system/about_page.dart';
+import 'package:rewardpoints/presentation/pages/system/debug_page.dart';
+import 'package:rewardpoints/presentation/pages/system/licenses_page.dart';
+import 'package:rewardpoints/presentation/pages/system/logs_page.dart';
+import 'package:rewardpoints/presentation/pages/user_detail_page.dart';
+import 'package:rewardpoints/shared/l10n/app_strings.dart';
+import 'package:rewardpoints/shared/logging/app_logger.dart';
 
 /// Named route definitions.
 class AppRouter {

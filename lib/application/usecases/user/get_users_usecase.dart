@@ -1,7 +1,7 @@
-import 'package:flutterbase/application/dto/user_dto.dart';
-import 'package:flutterbase/domain/entities/point_entry.dart';
-import 'package:flutterbase/domain/repositories/point_entry_repository.dart';
-import 'package:flutterbase/domain/repositories/user_repository.dart';
+import 'package:rewardpoints/application/dto/user_dto.dart';
+import 'package:rewardpoints/domain/entities/point_entry.dart';
+import 'package:rewardpoints/domain/repositories/point_entry_repository.dart';
+import 'package:rewardpoints/domain/repositories/user_repository.dart';
 
 final class GetUsersUseCase {
   const GetUsersUseCase(this._userRepo, this._pointRepo);

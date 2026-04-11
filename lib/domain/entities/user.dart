@@ -1,4 +1,4 @@
-import 'package:flutterbase/domain/value_objects/user_id.dart';
+import 'package:rewardpoints/domain/value_objects/user_id.dart';
 
 final class User {
   const User({required this.id, required this.name, required this.createdAt});

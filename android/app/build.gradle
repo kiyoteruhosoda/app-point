@@ -34,7 +34,7 @@ if (keystorePropertiesFile.exists()) {
 def hasKeystore = keystoreProperties.getProperty("storeFile") != null
 
 android {
-    namespace = "com.example.flutterbase"
+    namespace = "com.nolumia.rewardpoints"
     compileSdk = flutter.compileSdkVersion
 
     compileOptions {
@@ -58,7 +58,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.flutterbase"
+        applicationId = "com.nolumia.rewardpoints"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()

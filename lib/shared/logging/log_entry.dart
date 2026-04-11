@@ -1,4 +1,4 @@
-import 'package:flutterbase/shared/logging/log_level.dart';
+import 'package:rewardpoints/shared/logging/log_level.dart';
 
 /// A single immutable log entry.
 final class LogEntry {
