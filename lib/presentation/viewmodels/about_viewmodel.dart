@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutterbase/application/dto/app_info_dto.dart';
-import 'package:flutterbase/application/usecases/app_info/get_app_info_usecase.dart';
-import 'package:flutterbase/app/di/service_locator.dart';
-import 'package:flutterbase/shared/errors/app_error.dart';
-import 'package:flutterbase/shared/logging/app_logger.dart';
+import 'package:rewardpoints/application/dto/app_info_dto.dart';
+import 'package:rewardpoints/application/usecases/app_info/get_app_info_usecase.dart';
+import 'package:rewardpoints/app/di/service_locator.dart';
+import 'package:rewardpoints/shared/errors/app_error.dart';
+import 'package:rewardpoints/shared/logging/app_logger.dart';
 
 /// UI state for the About page.
 enum AboutState { loading, loaded, error }

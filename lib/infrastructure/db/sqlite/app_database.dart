@@ -1,6 +1,6 @@
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
-import 'package:flutterbase/infrastructure/db/sqlite/migrations/migration_v1.dart';
+import 'package:rewardpoints/infrastructure/db/sqlite/migrations/migration_v1.dart';
 
 final class AppDatabase {
   AppDatabase._();

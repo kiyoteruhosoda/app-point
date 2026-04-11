@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterbase/presentation/widgets/ui/widgets.dart';
-import 'package:flutterbase/shared/l10n/app_strings.dart';
-import 'package:flutterbase/shared/theme/theme.dart';
+import 'package:rewardpoints/presentation/widgets/ui/widgets.dart';
+import 'package:rewardpoints/shared/l10n/app_strings.dart';
+import 'package:rewardpoints/shared/theme/theme.dart';
 
 /// Third-party package licenses page.
 class LicensesPage extends StatelessWidget {

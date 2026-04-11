@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutterbase/application/dto/user_dto.dart';
-import 'package:flutterbase/application/usecases/user/create_user_usecase.dart';
-import 'package:flutterbase/application/usecases/user/delete_user_usecase.dart';
-import 'package:flutterbase/application/usecases/user/get_users_usecase.dart';
-import 'package:flutterbase/shared/errors/app_error.dart';
+import 'package:rewardpoints/application/dto/user_dto.dart';
+import 'package:rewardpoints/application/usecases/user/create_user_usecase.dart';
+import 'package:rewardpoints/application/usecases/user/delete_user_usecase.dart';
+import 'package:rewardpoints/application/usecases/user/get_users_usecase.dart';
+import 'package:rewardpoints/shared/errors/app_error.dart';
 
 enum UserListState { loading, loaded, empty, error }
 

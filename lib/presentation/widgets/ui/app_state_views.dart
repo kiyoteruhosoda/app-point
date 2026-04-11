@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutterbase/shared/l10n/app_strings.dart';
-import 'package:flutterbase/shared/theme/theme.dart';
+import 'package:rewardpoints/shared/l10n/app_strings.dart';
+import 'package:rewardpoints/shared/theme/theme.dart';
 import 'app_primary_button.dart';
 
 /// Loading state indicator.

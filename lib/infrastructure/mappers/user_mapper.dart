@@ -1,6 +1,6 @@
-import 'package:flutterbase/domain/entities/user.dart';
-import 'package:flutterbase/domain/value_objects/user_id.dart';
-import 'package:flutterbase/infrastructure/db/sqlite/rows/user_row.dart';
+import 'package:rewardpoints/domain/entities/user.dart';
+import 'package:rewardpoints/domain/value_objects/user_id.dart';
+import 'package:rewardpoints/infrastructure/db/sqlite/rows/user_row.dart';
 
 final class UserMapper {
   const UserMapper._();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutterbase/app/bootstrap/app_widget.dart';
-import 'package:flutterbase/app/di/service_locator.dart';
+import 'package:rewardpoints/app/bootstrap/app_widget.dart';
+import 'package:rewardpoints/app/di/service_locator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

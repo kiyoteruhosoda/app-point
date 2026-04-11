@@ -1,5 +1,5 @@
-import 'package:flutterbase/domain/value_objects/point_entry_id.dart';
-import 'package:flutterbase/domain/value_objects/user_id.dart';
+import 'package:rewardpoints/domain/value_objects/point_entry_id.dart';
+import 'package:rewardpoints/domain/value_objects/user_id.dart';
 
 sealed class PointEntry {
   const PointEntry({

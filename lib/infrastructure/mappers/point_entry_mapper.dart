@@ -1,7 +1,7 @@
-import 'package:flutterbase/domain/entities/point_entry.dart';
-import 'package:flutterbase/domain/value_objects/point_entry_id.dart';
-import 'package:flutterbase/domain/value_objects/user_id.dart';
-import 'package:flutterbase/infrastructure/db/sqlite/rows/point_entry_row.dart';
+import 'package:rewardpoints/domain/entities/point_entry.dart';
+import 'package:rewardpoints/domain/value_objects/point_entry_id.dart';
+import 'package:rewardpoints/domain/value_objects/user_id.dart';
+import 'package:rewardpoints/infrastructure/db/sqlite/rows/point_entry_row.dart';
 
 final class PointEntryMapper {
   const PointEntryMapper._();

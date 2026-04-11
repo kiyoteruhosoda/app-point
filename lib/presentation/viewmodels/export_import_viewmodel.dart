@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutterbase/application/usecases/data/export_data_usecase.dart';
-import 'package:flutterbase/application/usecases/data/import_data_usecase.dart';
-import 'package:flutterbase/shared/errors/app_error.dart';
+import 'package:rewardpoints/application/usecases/data/export_data_usecase.dart';
+import 'package:rewardpoints/application/usecases/data/import_data_usecase.dart';
+import 'package:rewardpoints/shared/errors/app_error.dart';
 
 enum ExportImportState { idle, loading, success, error }
 

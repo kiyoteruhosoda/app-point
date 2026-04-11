@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutterbase/shared/l10n/app_strings.dart';
-import 'package:flutterbase/shared/theme/theme.dart';
+import 'package:rewardpoints/shared/l10n/app_strings.dart';
+import 'package:rewardpoints/shared/theme/theme.dart';
 
 /// Footer bar shown at the bottom of the main screen.
 /// Contains navigation links only — version info is on the About page.

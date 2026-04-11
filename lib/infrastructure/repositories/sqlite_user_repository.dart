@@ -1,8 +1,8 @@
-import 'package:flutterbase/domain/entities/user.dart';
-import 'package:flutterbase/domain/repositories/user_repository.dart';
-import 'package:flutterbase/domain/value_objects/user_id.dart';
-import 'package:flutterbase/infrastructure/db/sqlite/dao/user_dao.dart';
-import 'package:flutterbase/infrastructure/mappers/user_mapper.dart';
+import 'package:rewardpoints/domain/entities/user.dart';
+import 'package:rewardpoints/domain/repositories/user_repository.dart';
+import 'package:rewardpoints/domain/value_objects/user_id.dart';
+import 'package:rewardpoints/infrastructure/db/sqlite/dao/user_dao.dart';
+import 'package:rewardpoints/infrastructure/mappers/user_mapper.dart';
 
 final class SqliteUserRepository implements UserRepository {
   const SqliteUserRepository(this._dao);

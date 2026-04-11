@@ -1,8 +1,8 @@
-import 'package:flutterbase/application/dto/consume_points_dto.dart';
-import 'package:flutterbase/application/dto/point_entry_dto.dart';
-import 'package:flutterbase/domain/entities/point_entry.dart';
-import 'package:flutterbase/domain/repositories/point_entry_repository.dart';
-import 'package:flutterbase/domain/value_objects/user_id.dart';
+import 'package:rewardpoints/application/dto/consume_points_dto.dart';
+import 'package:rewardpoints/application/dto/point_entry_dto.dart';
+import 'package:rewardpoints/domain/entities/point_entry.dart';
+import 'package:rewardpoints/domain/repositories/point_entry_repository.dart';
+import 'package:rewardpoints/domain/value_objects/user_id.dart';
 
 final class ConsumePointsUseCase {
   const ConsumePointsUseCase(this._repo);

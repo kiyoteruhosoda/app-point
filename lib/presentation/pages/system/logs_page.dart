@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutterbase/app/di/service_locator.dart';
-import 'package:flutterbase/presentation/widgets/ui/widgets.dart';
-import 'package:flutterbase/shared/l10n/app_strings.dart';
-import 'package:flutterbase/shared/logging/app_logger.dart';
-import 'package:flutterbase/shared/theme/theme.dart';
+import 'package:rewardpoints/app/di/service_locator.dart';
+import 'package:rewardpoints/presentation/widgets/ui/widgets.dart';
+import 'package:rewardpoints/shared/l10n/app_strings.dart';
+import 'package:rewardpoints/shared/logging/app_logger.dart';
+import 'package:rewardpoints/shared/theme/theme.dart';
 
 /// Displays the in-memory log buffer with level filtering and export.
 class LogsPage extends StatefulWidget {

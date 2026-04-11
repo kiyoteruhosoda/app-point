@@ -1,5 +1,5 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:flutterbase/infrastructure/db/sqlite/rows/user_row.dart';
+import 'package:rewardpoints/infrastructure/db/sqlite/rows/user_row.dart';
 
 final class UserDao {
   const UserDao(this._db);
