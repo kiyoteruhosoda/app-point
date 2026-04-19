@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:rewardpoints/domain/repositories/point_entry_repository.dart';
 import 'package:rewardpoints/domain/repositories/user_repository.dart';
@@ -10,33 +9,39 @@ final class ImportDataUseCase {
   final UserRepository _userRepo;
   final PointEntryRepository _pointRepo;
 
-  /// Import from [filePath]. Returns number of imported users.
-  Future<int> execute(String filePath) async {
-    final file = File(filePath);
-    if (!await file.exists()) throw const FileNotFoundException();
+  /// Import from a JSON string. Returns number of imported users.
+  Future<int> executeFromJson(String jsonContent) async {
+    final Map<String, dynamic> data;
+    try {
+      final decoded = jsonDecode(jsonContent);
+      if (decoded is! Map<String, dynamic>) {
+        throw const InvalidImportDataException();
+      }
+      data = decoded;
+    } on FormatException {
+      throw const InvalidImportDataException();
+    }
 
-    final content = await file.readAsString();
-    final data = jsonDecode(content) as Map<String, dynamic>;
-    final usersJson = data['users'] as List<dynamic>;
-    final entriesJson = data['entries'] as List<dynamic>;
+    final usersRaw = data['users'];
+    final entriesRaw = data['entries'];
+    if (usersRaw is! List || entriesRaw is! List) {
+      throw const InvalidImportDataException();
+    }
 
-    // Delete all existing users (cascades to entries)
     final existingUsers = await _userRepo.getAll();
     for (final u in existingUsers) {
       await _pointRepo.deleteByUserId(u.id);
       await _userRepo.delete(u.id);
     }
 
-    // Re-create users (new IDs assigned by DB)
     final idMap = <int, int>{};
-    for (final u in usersJson) {
+    for (final u in usersRaw) {
       final map = u as Map<String, dynamic>;
       final user = await _userRepo.create(map['name'] as String);
       idMap[map['id'] as int] = user.id.value;
     }
 
-    // Re-create entries
-    for (final e in entriesJson) {
+    for (final e in entriesRaw) {
       final map = e as Map<String, dynamic>;
       final oldUserId = map['userId'] as int;
       final newUserId = idMap[oldUserId];
@@ -62,12 +67,12 @@ final class ImportDataUseCase {
         );
       }
     }
-    return usersJson.length;
+    return usersRaw.length;
   }
 }
 
-final class FileNotFoundException implements Exception {
-  const FileNotFoundException();
+final class InvalidImportDataException implements Exception {
+  const InvalidImportDataException();
   @override
-  String toString() => 'FileNotFoundException: import file not found';
+  String toString() => 'InvalidImportDataException: malformed JSON payload';
 }

@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:rewardpoints/app/di/service_locator.dart';
 import 'package:rewardpoints/presentation/viewmodels/export_import_viewmodel.dart';
@@ -6,7 +10,11 @@ import 'package:rewardpoints/shared/l10n/app_strings.dart';
 import 'package:rewardpoints/shared/theme/theme.dart';
 
 class ExportImportPage extends StatefulWidget {
-  const ExportImportPage({super.key});
+  const ExportImportPage({super.key, this.initialImportJson});
+
+  /// When launched via a JSON file VIEW intent, the intent handler
+  /// passes the decoded file content here so the import runs on load.
+  final String? initialImportJson;
 
   @override
   State<ExportImportPage> createState() => _ExportImportPageState();
@@ -14,19 +22,23 @@ class ExportImportPage extends StatefulWidget {
 
 class _ExportImportPageState extends State<ExportImportPage> {
   late final ExportImportViewModel _viewModel;
-  final _importPathController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _viewModel = sl<ExportImportViewModel>();
     _viewModel.addListener(_onChanged);
+    final incoming = widget.initialImportJson;
+    if (incoming != null && incoming.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _runImport(incoming);
+      });
+    }
   }
 
   @override
   void dispose() {
     _viewModel.removeListener(_onChanged);
-    _importPathController.dispose();
     super.dispose();
   }
 
@@ -74,22 +86,13 @@ class _ExportImportPageState extends State<ExportImportPage> {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const SizedBox(height: AppSpacing.lg),
-                TextFormField(
-                  controller: _importPathController,
-                  decoration: const InputDecoration(
-                    labelText: AppStrings.dataImportPathLabel,
-                    hintText: AppStrings.dataImportPathHint,
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.lg),
                 AppSecondaryButton(
                   label: _viewModel.state == ExportImportState.loading
                       ? AppStrings.commonLoading
                       : AppStrings.dataImportButton,
                   onPressed: _viewModel.state == ExportImportState.loading
                       ? null
-                      : _doImport,
+                      : _doImportPick,
                   width: double.infinity,
                 ),
               ],
@@ -100,8 +103,7 @@ class _ExportImportPageState extends State<ExportImportPage> {
               padding: const EdgeInsets.only(top: AppSpacing.lg),
               child: Text(
                 _viewModel.error?.message ?? AppStrings.commonError,
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.error),
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
         ],
@@ -116,23 +118,7 @@ class _ExportImportPageState extends State<ExportImportPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-              '${AppStrings.dataExportSuccess}: ${_viewModel.lastMessage}'),
-        ),
-      );
-      _viewModel.reset();
-    }
-  }
-
-  Future<void> _doImport() async {
-    final path = _importPathController.text.trim();
-    if (path.isEmpty) return;
-    await _viewModel.importData(path);
-    if (!mounted) return;
-    if (_viewModel.state == ExportImportState.success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              Text(_viewModel.lastMessage ?? AppStrings.dataImportSuccess),
+              '${AppStrings.dataExportSuccess}: ${_viewModel.lastMessage ?? ''}'),
         ),
       );
       _viewModel.reset();
@@ -140,6 +126,53 @@ class _ExportImportPageState extends State<ExportImportPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(_viewModel.error?.message ?? AppStrings.commonError),
+        ),
+      );
+      _viewModel.reset();
+    }
+  }
+
+  Future<void> _doImportPick() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: const ['json'],
+      withData: true,
+    );
+    if (result == null || result.files.isEmpty) return;
+    final picked = result.files.single;
+    final jsonContent = await _readPicked(picked);
+    if (jsonContent == null) return;
+    await _runImport(jsonContent);
+  }
+
+  Future<String?> _readPicked(PlatformFile file) async {
+    if (file.bytes != null) {
+      return utf8.decode(file.bytes!);
+    }
+    final path = file.path;
+    if (path != null) {
+      return File(path).readAsString();
+    }
+    return null;
+  }
+
+  Future<void> _runImport(String jsonContent) async {
+    await _viewModel.importFromJson(jsonContent);
+    if (!mounted) return;
+    if (_viewModel.state == ExportImportState.success) {
+      final count = _viewModel.lastMessage ?? '0';
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            AppStrings.dataImportCountFormat.replaceFirst('%d', count),
+          ),
+        ),
+      );
+      _viewModel.reset();
+    } else if (_viewModel.state == ExportImportState.error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppStrings.dataImportInvalid),
         ),
       );
       _viewModel.reset();

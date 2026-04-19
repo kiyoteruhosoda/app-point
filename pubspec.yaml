@@ -43,6 +43,13 @@ dependencies:
   # Equatable (value objects)
   equatable: ^2.0.5
 
+  # Sharing (export flow) and file picking (import flow)
+  share_plus: ^10.0.0
+  file_picker: ^8.0.0
+
+  # Receive VIEW/SEND intents (open .json from other apps)
+  receive_sharing_intent: ^1.8.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
