@@ -1,12 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!--
-    Rounded 5-pointed star.
-    Outer R=210, inner R=145 (ratio 0.69 → puffy look).
-    All 10 vertices connected with C1-continuous cubic beziers:
-    tangent at each tip = perpendicular to radius (symmetric rounding);
-    tangent at each inner vertex = direction prev-outer → next-outer (smooth valley).
-  -->
-  <rect width="512" height="512" fill="#FF8F00"/>
   <path fill="#FFFFFF"
     d="M256,46
        C316,46 288.7,100.5 341.3,138.7
