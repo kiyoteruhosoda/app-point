@@ -20,6 +20,11 @@ final class AppDatabase {
       path,
       version: 1,
       onCreate: (db, version) => migrateV1(db),
+      onUpgrade: _onUpgrade,
     );
   }
+
+  // No schema bumps yet. When version is incremented, add the incremental
+  // migrations here so existing installs don't crash on update.
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {}
 }

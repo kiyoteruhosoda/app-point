@@ -66,6 +66,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            // Keep debug builds from colliding with release installs —
+            // different applicationId lets both APKs coexist and sidesteps
+            // signature-mismatch install failures when switching builds.
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
         release {
             signingConfig = hasKeystore ? signingConfigs.release : signingConfigs.debug
         }

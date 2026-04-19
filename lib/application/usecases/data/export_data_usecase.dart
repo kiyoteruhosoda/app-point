@@ -1,17 +1,21 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
 import 'package:rewardpoints/domain/entities/point_entry.dart';
 import 'package:rewardpoints/domain/repositories/point_entry_repository.dart';
 import 'package:rewardpoints/domain/repositories/user_repository.dart';
+
+final class ExportDataResult {
+  const ExportDataResult({required this.json, required this.suggestedFileName});
+  final String json;
+  final String suggestedFileName;
+}
 
 final class ExportDataUseCase {
   const ExportDataUseCase(this._userRepo, this._pointRepo);
   final UserRepository _userRepo;
   final PointEntryRepository _pointRepo;
 
-  Future<String> execute() async {
+  Future<ExportDataResult> execute({DateTime? now}) async {
     final users = await _userRepo.getAll();
     final usersJson = <Map<String, dynamic>>[];
     final entriesJson = <Map<String, dynamic>>[];
@@ -42,10 +46,13 @@ final class ExportDataUseCase {
       }
     }
 
-    final data = jsonEncode({'users': usersJson, 'entries': entriesJson});
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/point_data_export.json');
-    await file.writeAsString(data);
-    return file.path;
+    final json = jsonEncode({'users': usersJson, 'entries': entriesJson});
+    final ts = now ?? DateTime.now();
+    final fileName =
+        'point_data_${_fmt(ts.year, 4)}${_fmt(ts.month, 2)}${_fmt(ts.day, 2)}'
+        '_${_fmt(ts.hour, 2)}${_fmt(ts.minute, 2)}.json';
+    return ExportDataResult(json: json, suggestedFileName: fileName);
   }
+
+  String _fmt(int v, int width) => v.toString().padLeft(width, '0');
 }

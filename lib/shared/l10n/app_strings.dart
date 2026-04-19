@@ -198,15 +198,17 @@ class AppStrings {
   static const String dataTitle = 'Data';
   static const String dataExportTitle = 'Export';
   static const String dataExportDesc =
-      'Export all users and point history to a JSON file in Documents.';
-  static const String dataExportButton = 'Export to JSON';
-  static const String dataExportSuccess = 'Exported to';
+      'Share all users and point history as a JSON file. '
+      'Choose where to save it from the share sheet.';
+  static const String dataExportButton = 'Export & Share';
+  static const String dataExportSuccess = 'Export ready';
   static const String dataImportTitle = 'Import';
   static const String dataImportDesc =
-      'Import data from a previously exported JSON file.';
-  static const String dataImportPathLabel = 'File path';
-  static const String dataImportPathHint =
-      '/path/to/point_data_export.json';
-  static const String dataImportButton = 'Import from JSON';
+      'Pick a previously exported JSON file to restore the data. '
+      'This replaces existing users and history.';
+  static const String dataImportButton = 'Pick JSON File';
   static const String dataImportSuccess = 'Import successful';
+  static const String dataImportInvalid =
+      'Selected file is not a valid export JSON.';
+  static const String dataImportCountFormat = 'Imported %d users';
 }

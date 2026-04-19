@@ -41,13 +41,43 @@ class _UserDetailPageState extends State<UserDetailPage> {
   void _onChanged() => setState(() {});
 
   Future<void> _showEditDialog(PointEntryDto entry) async {
-    final dto = await showDialog<UpdatePointEntryDto>(
+    final result = await showDialog<_EntryDialogResult>(
       context: context,
       builder: (ctx) => _EditEntryDialog(entry: entry),
     );
-    if (dto != null && mounted) {
-      await _viewModel.updateEntry(dto);
+    if (!mounted || result == null) return;
+    switch (result) {
+      case _EntrySave(:final dto):
+        await _viewModel.updateEntry(dto);
+      case _EntryDelete():
+        final confirmed = await _confirmDelete();
+        if (!mounted || !confirmed) return;
+        await _viewModel.deleteEntry(entry.id);
     }
+  }
+
+  Future<bool> _confirmDelete() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text(AppStrings.pointDeleteTitle),
+        content: const Text(AppStrings.pointDeleteBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text(AppStrings.commonCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(
+              AppStrings.commonDelete,
+              style: TextStyle(color: Theme.of(ctx).colorScheme.error),
+            ),
+          ),
+        ],
+      ),
+    );
+    return confirmed == true;
   }
 
   @override
@@ -144,30 +174,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
               color: Theme.of(context).colorScheme.onErrorContainer,
             ),
           ),
-          confirmDismiss: (_) async {
-            final confirmed = await showDialog<bool>(
-              context: context,
-              builder: (ctx) => AlertDialog(
-                title: const Text(AppStrings.pointDeleteTitle),
-                content: const Text(AppStrings.pointDeleteBody),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(false),
-                    child: const Text(AppStrings.commonCancel),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(true),
-                    child: Text(
-                      AppStrings.commonDelete,
-                      style: TextStyle(
-                          color: Theme.of(ctx).colorScheme.error),
-                    ),
-                  ),
-                ],
-              ),
-            );
-            return confirmed == true;
-          },
+          confirmDismiss: (_) => _confirmDelete(),
           onDismissed: (_) => _viewModel.deleteEntry(entry.id),
           child: InkWell(
             onTap: () => _showEditDialog(entry),
@@ -313,18 +320,23 @@ class _EditEntryDialogState extends State<_EditEntryDialog> {
   void _save() {
     if (!_formKey.currentState!.validate()) return;
     Navigator.of(context).pop(
-      UpdatePointEntryDto(
-        id: widget.entry.id,
-        dateTime: _selectedDate,
-        points: int.parse(_pointsController.text),
-        reason: _isAddition ? _mainController.text.trim() : null,
-        application: _isAddition ? null : _mainController.text.trim(),
-        tag: _tagController.text.trim().isEmpty
-            ? null
-            : _tagController.text.trim(),
+      _EntrySave(
+        UpdatePointEntryDto(
+          id: widget.entry.id,
+          dateTime: _selectedDate,
+          points: int.parse(_pointsController.text),
+          reason: _isAddition ? _mainController.text.trim() : null,
+          application: _isAddition ? null : _mainController.text.trim(),
+          tag: _tagController.text.trim().isEmpty
+              ? null
+              : _tagController.text.trim(),
+        ),
       ),
     );
   }
+
+  void _requestDelete() =>
+      Navigator.of(context).pop(const _EntryDelete());
 
   @override
   Widget build(BuildContext context) {
@@ -392,6 +404,13 @@ class _EditEntryDialogState extends State<_EditEntryDialog> {
       ),
       actions: [
         TextButton(
+          onPressed: _requestDelete,
+          child: Text(
+            AppStrings.commonDelete,
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
+          ),
+        ),
+        TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text(AppStrings.commonCancel),
         ),
@@ -406,4 +425,17 @@ class _EditEntryDialogState extends State<_EditEntryDialog> {
   String _formatDate(DateTime dt) =>
       '${dt.year}-${dt.month.toString().padLeft(2, '0')}-${dt.day.toString().padLeft(2, '0')} '
       '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
+}
+
+sealed class _EntryDialogResult {
+  const _EntryDialogResult();
+}
+
+final class _EntrySave extends _EntryDialogResult {
+  const _EntrySave(this.dto);
+  final UpdatePointEntryDto dto;
+}
+
+final class _EntryDelete extends _EntryDialogResult {
+  const _EntryDelete();
 }
