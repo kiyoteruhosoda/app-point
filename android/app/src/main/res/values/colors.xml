@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--
-      Adaptive launcher icon background: deep amber/orange.
+      Adaptive launcher icon background.
+      Matches splash screen background (launch_background.xml).
       Keep in sync with pubspec.yaml > flutter_launcher_icons.adaptive_icon_background.
     -->
-    <color name="ic_launcher_background">#FF8F00</color>
+    <color name="ic_launcher_background">#2060C0</color>
 </resources>
