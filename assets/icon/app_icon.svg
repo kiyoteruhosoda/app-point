@@ -1,12 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <defs>
-    <radialGradient id="g" cx="44%" cy="30%" r="65%">
-      <stop offset="0%"   stop-color="#FFE040"/>
-      <stop offset="55%"  stop-color="#FFC107"/>
-      <stop offset="100%" stop-color="#E65100"/>
-    </radialGradient>
-  </defs>
-  <rect width="512" height="512" fill="#080808"/>
-  <path fill="url(#g)"
-    d="M256,56 L303,191 L446,194 L332,281 L374,418 L256,336 L138,418 L180,281 L66,194 L209,191 Z"/>
+  <!--
+    Rounded 5-pointed star.
+    Outer R=210, inner R=145 (ratio 0.69 → puffy look).
+    All 10 vertices connected with C1-continuous cubic beziers:
+    tangent at each tip = perpendicular to radius (symmetric rounding);
+    tangent at each inner vertex = direction prev-outer → next-outer (smooth valley).
+  -->
+  <rect width="512" height="512" fill="#FF8F00"/>
+  <path fill="#FFFFFF"
+    d="M256,46
+       C316,46 288.7,100.5 341.3,138.7
+       C393.9,176.9 437.2,134 455.7,191.1
+       C474.2,248.2 413.9,239.2 393.9,300.8
+       C373.9,362.4 428,390.6 379.5,425.9
+       C331,461.2 321,401 256,401
+       C191,401 181,461.2 132.5,425.9
+       C84,390.6 138.1,362.4 118.1,300.8
+       C98.1,239.2 37.8,248.2 56.3,191.1
+       C74.8,134 118.1,176.9 170.7,138.7
+       C223.3,100.5 196,46 256,46 Z"/>
 </svg>
