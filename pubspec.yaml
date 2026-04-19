@@ -53,6 +53,10 @@ dev_dependencies:
   riverpod_generator: ^2.4.3
   mockito: ^5.4.4
   sqflite_common_ffi: ^2.3.3
+  # 0.13.x fails on Dart SDK >=3.3 during adaptive-icon generation
+  # (silently skips mipmap-anydpi-v26 output). 0.14+ also unlocks the
+  # `adaptive_icon_monochrome` knob used for Android 13+ themed icons.
+  flutter_launcher_icons: ^0.14.3
 
 flutter:
   uses-material-design: true
@@ -66,3 +70,23 @@ flutter:
           weight: 400
         - asset: assets/fonts/NotoSansJP-Bold.ttf
           weight: 700
+
+# Launcher-icon generation.
+# Regenerate after editing by running:
+#   dart run flutter_launcher_icons
+# The generated PNGs under android/app/src/main/res/mipmap-*/ and
+# mipmap-anydpi-v26/ic_launcher.xml should be committed.
+flutter_launcher_icons:
+  android: "ic_launcher"
+  image_path: "assets/icon/app_icon.png"
+  # Brand colour — keep in sync with AppColors.brand (AppColors.blue800)
+  # and res/values/colors.xml@ic_launcher_background.
+  adaptive_icon_background: "#264AF4"
+  adaptive_icon_foreground: "assets/icon/app_icon.png"
+  # Android 13+ themed icons (requires flutter_launcher_icons >=0.14).
+  adaptive_icon_monochrome: "assets/icon/app_icon.png"
+  min_sdk_android: 21
+  # ios section intentionally omitted — no ios/ directory yet.
+  # When iOS is added, re-enable with:
+  #   ios: true
+  #   remove_alpha_ios: true
