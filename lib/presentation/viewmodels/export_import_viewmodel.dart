@@ -32,9 +32,9 @@ final class ExportImportViewModel extends ChangeNotifier {
       final result = await _export.execute();
       final name = p.basenameWithoutExtension(result.suggestedFileName);
       await FileSaver.instance.saveFile(
-        name: name,
-        bytes: Uint8List.fromList(utf8.encode(result.json)),
-        ext: 'json',
+        name,
+        Uint8List.fromList(utf8.encode(result.json)),
+        'json',
         mimeType: MimeType.json,
       );
       _lastMessage = result.suggestedFileName;
