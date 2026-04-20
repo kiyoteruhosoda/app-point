@@ -1,20 +1,17 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
-import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
-import 'package:path/path.dart' as p;
 import 'package:rewardpoints/application/usecases/data/export_data_usecase.dart';
 import 'package:rewardpoints/application/usecases/data/import_data_usecase.dart';
+import 'package:rewardpoints/infrastructure/files/export_file_writer.dart';
 import 'package:rewardpoints/shared/errors/app_error.dart';
 
 enum ExportImportState { idle, loading, success, error }
 
 final class ExportImportViewModel extends ChangeNotifier {
-  ExportImportViewModel(this._export, this._import);
+  ExportImportViewModel(this._export, this._import, this._fileWriter);
 
   final ExportDataUseCase _export;
   final ImportDataUseCase _import;
+  final ExportFileWriter _fileWriter;
 
   ExportImportState _state = ExportImportState.idle;
   AppError? _error;
@@ -30,14 +27,11 @@ final class ExportImportViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       final result = await _export.execute();
-      final name = p.basenameWithoutExtension(result.suggestedFileName);
-      await FileSaver.instance.saveFile(
-        name: name,
-        bytes: Uint8List.fromList(utf8.encode(result.json)),
-        fileExtension: 'json',
-        customMimeType: 'application/json',
+      final savedLocation = await _fileWriter.saveJson(
+        suggestedFileName: result.suggestedFileName,
+        json: result.json,
       );
-      _lastMessage = result.suggestedFileName;
+      _lastMessage = savedLocation;
       _state = ExportImportState.success;
     } catch (e, st) {
       _error = UnexpectedError('Export failed', cause: e, stackTrace: st);
