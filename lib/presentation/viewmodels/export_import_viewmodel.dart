@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
-import 'package:path/path.dart' as p;
 import 'package:rewardpoints/application/usecases/data/export_data_usecase.dart';
 import 'package:rewardpoints/application/usecases/data/import_data_usecase.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:rewardpoints/shared/errors/app_error.dart';
 
 enum ExportImportState { idle, loading, success, error }
@@ -30,12 +29,15 @@ final class ExportImportViewModel extends ChangeNotifier {
     notifyListeners();
     try {
       final result = await _export.execute();
-      final name = p.basenameWithoutExtension(result.suggestedFileName);
-      await FileSaver.instance.saveFile(
-        name: name,
-        bytes: Uint8List.fromList(utf8.encode(result.json)),
-        fileExtension: 'json',
-        customMimeType: 'application/json',
+      final bytes = Uint8List.fromList(utf8.encode(result.json));
+      final xFile = XFile.fromData(
+        bytes,
+        mimeType: 'application/json',
+        name: result.suggestedFileName,
+      );
+      await Share.shareXFiles(
+        [xFile],
+        subject: result.suggestedFileName,
       );
       _lastMessage = result.suggestedFileName;
       _state = ExportImportState.success;
