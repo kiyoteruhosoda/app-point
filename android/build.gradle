@@ -17,13 +17,25 @@ subprojects {
 // Force every Android subproject (including Flutter plugins such as
 // receive_sharing_intent) to compile Java/Kotlin with JDK 17 so their
 // compileReleaseJavaWithJavac and compileReleaseKotlin tasks agree on
-// jvmTarget. Configure the compile tasks directly via configureEach —
-// afterEvaluate hooks race against :app being force-evaluated by
-// evaluationDependsOn and fail with "already evaluated".
+// jvmTarget. pluginManager.withPlugin fires synchronously when the
+// AGP plugin is applied, before tasks are created, so AGP picks up
+// our compileOptions instead of its 1.8 defaults.
 subprojects {
-    tasks.withType(JavaCompile).configureEach {
-        sourceCompatibility = JavaVersion.VERSION_17.toString()
-        targetCompatibility = JavaVersion.VERSION_17.toString()
+    pluginManager.withPlugin("com.android.application") {
+        android {
+            compileOptions {
+                sourceCompatibility = JavaVersion.VERSION_17
+                targetCompatibility = JavaVersion.VERSION_17
+            }
+        }
+    }
+    pluginManager.withPlugin("com.android.library") {
+        android {
+            compileOptions {
+                sourceCompatibility = JavaVersion.VERSION_17
+                targetCompatibility = JavaVersion.VERSION_17
+            }
+        }
     }
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
