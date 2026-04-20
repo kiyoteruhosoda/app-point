@@ -94,7 +94,9 @@ android {
             versionNameSuffix "-debug"
         }
         release {
-            signingConfig = hasKeystore ? signingConfigs.release : signingConfigs.debug
+            if (hasKeystore) {
+                signingConfig = signingConfigs.release
+            }
         }
     }
 }
