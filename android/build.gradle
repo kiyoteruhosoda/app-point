@@ -14,6 +14,30 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// Force every Android subproject (including Flutter plugins such as
+// receive_sharing_intent) to compile Java/Kotlin with JDK 17 so their
+// compileReleaseJavaWithJavac and compileReleaseKotlin tasks agree on
+// jvmTarget. Without this some plugins leave Java at 1.8 while their
+// Kotlin code compiles to 17 and Gradle fails the build.
+subprojects {
+    afterEvaluate { project ->
+        if (project.plugins.hasPlugin("com.android.application") ||
+            project.plugins.hasPlugin("com.android.library")) {
+            project.android {
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
+        project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+    }
+}
+
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
