@@ -12,6 +12,14 @@ abstract interface class ExportFileWriter {
   });
 }
 
+final class ExportShareUnavailableException implements Exception {
+  const ExportShareUnavailableException(this.message);
+  final String message;
+
+  @override
+  String toString() => message;
+}
+
 final class PlatformExportFileWriter implements ExportFileWriter {
   @override
   Future<String> shareJson({
@@ -25,7 +33,15 @@ final class PlatformExportFileWriter implements ExportFileWriter {
     final result = await Share.shareXFiles(
       [XFile(file.path, mimeType: 'application/json')],
       fileNameOverrides: [suggestedFileName],
+      subject: 'RewardPoints Export',
+      text: 'RewardPoints data export JSON',
     );
+
+    if (result.status == ShareResultStatus.unavailable) {
+      throw const ExportShareUnavailableException(
+        'この端末では共有先アプリ選択が利用できません（share_plus status: unavailable）。',
+      );
+    }
 
     return result.status.name;
   }

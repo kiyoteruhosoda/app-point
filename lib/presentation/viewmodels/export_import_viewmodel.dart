@@ -33,6 +33,9 @@ final class ExportImportViewModel extends ChangeNotifier {
       );
       _lastMessage = shareResult;
       _state = ExportImportState.success;
+    } on ExportShareUnavailableException catch (e, st) {
+      _error = UnexpectedError(e.message, cause: e, stackTrace: st);
+      _state = ExportImportState.error;
     } catch (e, st) {
       _error = UnexpectedError('Share failed', cause: e, stackTrace: st);
       _state = ExportImportState.error;

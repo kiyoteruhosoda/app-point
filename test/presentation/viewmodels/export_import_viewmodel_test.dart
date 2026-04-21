@@ -85,12 +85,16 @@ class _CapturingWriter implements ExportFileWriter {
   String? lastSuggestedName;
   String? lastJson;
   String resultToReturn = 'success';
+  bool throwUnavailable = false;
 
   @override
   Future<String> shareJson({
     required String suggestedFileName,
     required String json,
   }) async {
+    if (throwUnavailable) {
+      throw const ExportShareUnavailableException('share unavailable');
+    }
     lastSuggestedName = suggestedFileName;
     lastJson = json;
     return resultToReturn;
@@ -125,5 +129,31 @@ void main() {
     expect(writer.lastSuggestedName, startsWith('point_data_'));
     expect(writer.lastJson, contains('"users"'));
     expect(writer.lastJson, contains('"entries"'));
+  });
+
+  test('export maps share unavailable to error state', () async {
+    final user = User(
+      id: const UserId(1),
+      name: 'Alice',
+      createdAt: DateTime.utc(2026, 4, 20),
+    );
+
+    final writer = _CapturingWriter()..throwUnavailable = true;
+    final vm = ExportImportViewModel(
+      ExportDataUseCase(
+        _FakeUserRepo([user]),
+        _FakePointRepo(const {}),
+      ),
+      ImportDataUseCase(
+        _FakeUserRepo(const []),
+        _FakePointRepo(const {}),
+      ),
+      writer,
+    );
+
+    await vm.exportData();
+
+    expect(vm.state, ExportImportState.error);
+    expect(vm.error?.message, 'share unavailable');
   });
 }
