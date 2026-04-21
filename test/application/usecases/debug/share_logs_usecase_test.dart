@@ -50,12 +50,12 @@ class _FakeLogger implements AppLogger {
 }
 
 class _FakeLogShareRepository implements LogShareRepository {
-  String? sharedPath;
+  FileShareRequest? request;
   String status = 'success';
 
   @override
-  Future<String> share({required String filePath}) async {
-    sharedPath = filePath;
+  Future<String> share(FileShareRequest request) async {
+    this.request = request;
     return status;
   }
 }
@@ -69,7 +69,9 @@ void main() {
     final result = await useCase.execute();
 
     expect(result, 'dismissed');
-    expect(repository.sharedPath, '/tmp/logs/export.log');
+    expect(repository.request?.path, '/tmp/logs/export.log');
+    expect(repository.request?.mimeType, 'text/plain');
+    expect(repository.request?.chooserTitle, 'ログを共有');
   });
 
   test('exportに失敗した場合はドメイン例外を返す', () async {
