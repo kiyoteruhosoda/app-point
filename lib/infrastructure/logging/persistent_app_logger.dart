@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -31,9 +32,9 @@ final class PersistentAppLogger implements AppLogger {
 
   late final Logger _logger;
   final List<LogEntry> _buffer = [];
-  IOSink? _fileSink;
   File? _currentFile;
   LogLevel _minLevel = LogLevel.debug;
+  Future<void> _pendingFileWrite = Future.value();
 
   // ── Initialisation ────────────────────────────────────────────────────
 
@@ -52,6 +53,7 @@ final class PersistentAppLogger implements AppLogger {
   Future<void> init({LogLevel? savedLevel}) async {
     if (savedLevel != null) _minLevel = savedLevel;
     try {
+      await _restoreEntriesFromDisk();
       await _openNewLogFile();
     } catch (e) {
       debugPrint('[PersistentAppLogger] Could not open log file: $e');
@@ -94,6 +96,7 @@ final class PersistentAppLogger implements AppLogger {
   @override
   Future<String?> exportLogs() async {
     try {
+      await _pendingFileWrite;
       final dir = await _logsDirectory();
       final file = File('${dir.path}/export_${_fileTimestamp()}.log');
       final sink = file.openWrite();
@@ -158,28 +161,105 @@ final class PersistentAppLogger implements AppLogger {
         _logger.e(message, error: error, stackTrace: stackTrace);
     }
 
-    _writeToFile(entry);
+    _enqueueFileWrite(entry);
   }
 
-  void _writeToFile(LogEntry entry) {
-    if (_fileSink == null) return;
+  void _enqueueFileWrite(LogEntry entry) {
+    _pendingFileWrite = _pendingFileWrite.then((_) => _writeToFile(entry));
+  }
+
+  Future<void> _writeToFile(LogEntry entry) async {
+    final file = _currentFile;
+    if (file == null) return;
     try {
-      _fileSink!.writeln(entry.toLogLine());
-      _currentFile?.length().then((size) {
-        if (size >= maxFileSizeBytes) _openNewLogFile();
-      });
+      await file.writeAsString('${entry.toLogLine()}\n',
+          mode: FileMode.append, flush: true);
+      final size = await file.length();
+      if (size >= maxFileSizeBytes) {
+        await _openNewLogFile();
+      }
     } catch (_) {
       // Swallow file write errors — console logging continues.
     }
   }
 
   Future<void> _openNewLogFile() async {
-    await _fileSink?.close();
-    _fileSink = null;
     final dir = await _logsDirectory();
     _currentFile = File('${dir.path}/app_${_fileTimestamp()}.log');
-    _fileSink = _currentFile!.openWrite(mode: FileMode.append);
+    if (!_currentFile!.existsSync()) {
+      await _currentFile!.create(recursive: true);
+    }
     await _pruneOldFiles(dir);
+  }
+
+  Future<void> _restoreEntriesFromDisk() async {
+    final files = await logFiles();
+    if (files.isEmpty) return;
+
+    final sorted = [...files]..sort((a, b) => a.path.compareTo(b.path));
+    final restored = <LogEntry>[];
+
+    for (final file in sorted) {
+      final content = await file.readAsString();
+      final parsed = _parseLogEntries(content);
+      restored.addAll(parsed);
+    }
+
+    if (restored.length > maxBufferEntries) {
+      _buffer
+        ..clear()
+        ..addAll(restored.sublist(restored.length - maxBufferEntries));
+      return;
+    }
+
+    _buffer
+      ..clear()
+      ..addAll(restored);
+  }
+
+  List<LogEntry> _parseLogEntries(String content) {
+    final lines = content.split('\n');
+    final entries = <LogEntry>[];
+    final pattern = RegExp(r'^\[(.+?)\]\[([VDIWE])\] (.*)$');
+    LogEntry? current;
+
+    for (final line in lines) {
+      if (line.trim().isEmpty) continue;
+      final match = pattern.firstMatch(line);
+      if (match == null) {
+        if (current != null) {
+          current = LogEntry(
+            timestamp: current.timestamp,
+            level: current.level,
+            message: '${current.message}\n$line',
+            error: current.error,
+            stackTrace: current.stackTrace,
+          );
+        }
+        continue;
+      }
+
+      if (current != null) entries.add(current);
+
+      final level = switch (match.group(2)) {
+        'V' => LogLevel.verbose,
+        'D' => LogLevel.debug,
+        'I' => LogLevel.info,
+        'W' => LogLevel.warning,
+        'E' => LogLevel.error,
+        _ => LogLevel.info,
+      };
+
+      final ts = DateTime.tryParse(match.group(1) ?? '');
+      current = LogEntry(
+        timestamp: ts ?? DateTime.now(),
+        level: level,
+        message: match.group(3) ?? '',
+      );
+    }
+
+    if (current != null) entries.add(current);
+    return entries;
   }
 
   Future<void> _pruneOldFiles(Directory dir) async {
