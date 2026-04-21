@@ -5,6 +5,7 @@ import 'package:rewardpoints/application/usecases/app_info/get_app_info_usecase.
 import 'package:rewardpoints/application/usecases/data/export_data_usecase.dart';
 import 'package:rewardpoints/application/usecases/data/import_data_usecase.dart';
 import 'package:rewardpoints/application/usecases/debug/get_debug_settings_usecase.dart';
+import 'package:rewardpoints/application/usecases/debug/share_logs_usecase.dart';
 import 'package:rewardpoints/application/usecases/debug/set_debug_mode_usecase.dart';
 import 'package:rewardpoints/application/usecases/debug/set_log_level_usecase.dart';
 import 'package:rewardpoints/application/usecases/points/add_points_usecase.dart';
@@ -22,6 +23,7 @@ import 'package:rewardpoints/application/usecases/user/delete_user_usecase.dart'
 import 'package:rewardpoints/application/usecases/user/get_users_usecase.dart';
 import 'package:rewardpoints/domain/repositories/app_info_repository.dart';
 import 'package:rewardpoints/domain/repositories/debug_settings_repository.dart';
+import 'package:rewardpoints/domain/repositories/log_share_repository.dart';
 import 'package:rewardpoints/domain/repositories/point_entry_repository.dart';
 import 'package:rewardpoints/domain/repositories/theme_preference_repository.dart';
 import 'package:rewardpoints/domain/repositories/user_repository.dart';
@@ -30,6 +32,7 @@ import 'package:rewardpoints/infrastructure/db/sqlite/dao/point_entry_dao.dart';
 import 'package:rewardpoints/infrastructure/db/sqlite/dao/user_dao.dart';
 import 'package:rewardpoints/infrastructure/files/export_file_writer.dart';
 import 'package:rewardpoints/infrastructure/logging/persistent_app_logger.dart';
+import 'package:rewardpoints/infrastructure/logging/log_share_repository_impl.dart';
 import 'package:rewardpoints/infrastructure/repositories/package_info_app_info_repository.dart';
 import 'package:rewardpoints/infrastructure/repositories/shared_preferences_debug_settings_repository.dart';
 import 'package:rewardpoints/infrastructure/repositories/shared_preferences_theme_preference_repository.dart';
@@ -98,6 +101,9 @@ Future<void> setupServiceLocator() async {
   sl.registerFactory<SetLogLevelUseCase>(
     () => SetLogLevelUseCase(sl<DebugSettingsRepository>(), sl<AppLogger>()),
   );
+  sl.registerFactory<ShareLogsUseCase>(
+    () => ShareLogsUseCase(sl<AppLogger>(), sl<LogShareRepository>()),
+  );
 
   // ─── ViewModels ──────────────────────────────────────────────────────
 
@@ -136,6 +142,12 @@ Future<void> setupServiceLocator() async {
   sl.registerSingleton<ExportFileWriter>(
     LoggedExportFileWriter(
       PlatformExportFileWriter(),
+      sl<AppLogger>(),
+    ),
+  );
+  sl.registerSingleton<LogShareRepository>(
+    LoggedLogShareRepository(
+      PlatformLogShareRepository(),
       sl<AppLogger>(),
     ),
   );
