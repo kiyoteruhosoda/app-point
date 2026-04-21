@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rewardpoints/application/usecases/debug/share_logs_usecase.dart';
 import 'package:rewardpoints/app/di/service_locator.dart';
 import 'package:rewardpoints/presentation/widgets/ui/widgets.dart';
 import 'package:rewardpoints/shared/l10n/app_strings.dart';
@@ -17,6 +18,7 @@ class LogsPage extends StatefulWidget {
 class _LogsPageState extends State<LogsPage> {
   LogLevel? _filter; // null = all
   late final AppLogger _logger = sl<AppLogger>();
+  late final ShareLogsUseCase _shareLogsUseCase = sl<ShareLogsUseCase>();
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +69,18 @@ class _LogsPageState extends State<LogsPage> {
   }
 
   Future<void> _exportLogs() async {
-    final path = await _logger.exportLogs();
+    String? status;
+    try {
+      status = await _shareLogsUseCase.execute();
+    } on ShareLogsFailedException {
+      status = null;
+    } catch (_) {
+      status = null;
+    }
     if (!mounted) return;
-    final msg =
-        path != null ? AppStrings.logsDownloadSuccess : AppStrings.logsDownloadError;
+    final msg = status != null
+        ? '${AppStrings.logsDownloadSuccess} ($status)'
+        : AppStrings.logsDownloadError;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 

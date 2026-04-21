@@ -122,8 +122,8 @@ class AppStrings {
       'Delete all log entries from memory?';
   static const String logsClearSuccess = 'Logs cleared';
   static const String logsDownload = 'Share';
-  static const String logsDownloadSuccess = 'Logs saved to file';
-  static const String logsDownloadError = 'Failed to save logs';
+  static const String logsDownloadSuccess = 'Logs shared';
+  static const String logsDownloadError = 'Failed to share logs';
   static const String logsEmpty = 'No log entries';
   static const String logsCancel = 'Cancel';
   static const String logsConfirm = 'Clear';
