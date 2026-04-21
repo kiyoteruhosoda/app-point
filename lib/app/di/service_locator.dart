@@ -133,7 +133,12 @@ Future<void> setupServiceLocator() async {
   sl.registerSingleton<PointEntryRepository>(
     SqlitePointEntryRepository(pointEntryDao),
   );
-  sl.registerSingleton<ExportFileWriter>(PlatformExportFileWriter());
+  sl.registerSingleton<ExportFileWriter>(
+    LoggedExportFileWriter(
+      PlatformExportFileWriter(),
+      sl<AppLogger>(),
+    ),
+  );
 
   // ─── Application (UseCases) ─────────────────────────────────────────
   sl.registerFactory<CreateUserUseCase>(
@@ -203,6 +208,7 @@ Future<void> setupServiceLocator() async {
       sl<ExportDataUseCase>(),
       sl<ImportDataUseCase>(),
       sl<ExportFileWriter>(),
+      sl<AppLogger>(),
     ),
   );
 

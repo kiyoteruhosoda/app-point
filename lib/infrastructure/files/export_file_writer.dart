@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cross_file/cross_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rewardpoints/shared/logging/app_logger.dart';
 import 'package:share_plus/share_plus.dart';
 
 abstract interface class ExportFileWriter {
@@ -44,5 +45,47 @@ final class PlatformExportFileWriter implements ExportFileWriter {
     }
 
     return result.status.name;
+  }
+}
+
+final class LoggedExportFileWriter implements ExportFileWriter {
+  LoggedExportFileWriter(this._delegate, this._logger);
+
+  final ExportFileWriter _delegate;
+  final AppLogger _logger;
+
+  @override
+  Future<String> shareJson({
+    required String suggestedFileName,
+    required String json,
+  }) async {
+    _logger.info(
+      '[ExportFileWriter] shareJson start '
+      '(fileName: $suggestedFileName, bytes: ${utf8.encode(json).length})',
+    );
+    try {
+      final result = await _delegate.shareJson(
+        suggestedFileName: suggestedFileName,
+        json: json,
+      );
+      _logger.info(
+        '[ExportFileWriter] shareJson completed (status: $result)',
+      );
+      return result;
+    } on ExportShareUnavailableException catch (e, st) {
+      _logger.warning(
+        '[ExportFileWriter] shareJson unavailable',
+        error: e,
+        stackTrace: st,
+      );
+      rethrow;
+    } catch (e, st) {
+      _logger.error(
+        '[ExportFileWriter] shareJson failed',
+        error: e,
+        stackTrace: st,
+      );
+      rethrow;
+    }
   }
 }
