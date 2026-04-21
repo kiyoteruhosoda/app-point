@@ -23,7 +23,15 @@ final class ShareLogsUseCase {
     }
 
     try {
-      return await _repository.share(filePath: path);
+      return await _repository.share(
+        FileShareRequest(
+          path: path,
+          mimeType: 'text/plain',
+          chooserTitle: 'ログを共有',
+          subject: 'PointBook Logs',
+          text: 'PointBook application logs',
+        ),
+      );
     } catch (e) {
       throw ShareLogsFailedException('ログ共有に失敗しました: $e');
     }
