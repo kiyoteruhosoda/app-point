@@ -97,10 +97,21 @@ android {
             // Always produce an installable APK: if no release keystore is
             // configured, explicitly fall back to debug signing.
             signingConfig = hasKeystore ? signingConfigs.release : signingConfigs.debug
+            // Temporary mitigation for FileProvider/XML parser runtime mismatch
+            // seen only on obfuscated release binaries.
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
 }
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // Pin androidx.core to avoid transitive drift that can trigger
+    // FileProvider runtime incompatibilities on some release builds.
+    implementation "androidx.core:core-ktx:1.12.0"
 }
