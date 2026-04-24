@@ -14,8 +14,8 @@ Two defences already in the repo:
 
 - `android/app/build.gradle` gives the **debug** build type
   `applicationIdSuffix ".debug"` so debug and release APKs install side-by-side
-  as separate packages (`com.nolumia.rewardpoints.debug` vs
-  `com.nolumia.rewardpoints`). They no longer collide.
+  as separate packages (`com.nolmia.rewardpoints.debug` vs
+  `com.nolmia.rewardpoints`). They no longer collide.
 - CI (`.github/workflows/build.yml`) decodes `KEYSTORE_BASE64` to
   `android/app/release.keystore` and writes `android/key.properties` before
   `flutter build apk --release`.
@@ -96,8 +96,8 @@ What this script does:
 - Verifies `adb` and connected devices
 - If multiple devices are connected, requires `ANDROID_SERIAL` to select target
 - Uninstalls both package IDs used in this repo
-  - `com.nolumia.rewardpoints` (release)
-  - `com.nolumia.rewardpoints.debug` (debug)
+  - `com.nolmia.rewardpoints` (release)
+  - `com.nolmia.rewardpoints.debug` (debug)
 - Abandons stale package installer sessions (`pm install-abandon`)
 - Returns non-zero exit code when non-ignorable recovery steps fail
 
