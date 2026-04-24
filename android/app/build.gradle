@@ -51,7 +51,7 @@ if (isReleaseBuildRequested && !hasKeystore && !requireReleaseKeystore) {
 }
 
 android {
-    namespace = "com.nolumia.rewardpoints"
+    namespace = "com.nolumia.rewardpoints.app"
     compileSdk = flutter.compileSdkVersion
     // integration_test requires NDK 26.3.11579264; pin here so all
     // plugins resolve to the same (highest) version.
@@ -78,7 +78,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.nolumia.rewardpoints"
+        applicationId = "com.nolumia.rewardpoints.app"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()

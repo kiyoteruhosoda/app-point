@@ -170,8 +170,8 @@ final class InstallRecoveryService {
   final InstallRecoveryPort _port;
 
   static const _targetPackages = [
-    AndroidPackage('com.nolumia.rewardpoints', role: 'release'),
-    AndroidPackage('com.nolumia.rewardpoints.debug', role: 'debug'),
+    AndroidPackage('com.nolumia.rewardpoints.app', role: 'release'),
+    AndroidPackage('com.nolumia.rewardpoints.app.debug', role: 'debug'),
   ];
 
   Future<int> execute() async {
