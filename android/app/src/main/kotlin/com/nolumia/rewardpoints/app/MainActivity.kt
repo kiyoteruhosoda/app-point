@@ -1,4 +1,4 @@
-package com.nolumia.rewardpoints
+package com.nolumia.rewardpoints.app
 
 import android.content.Intent
 import android.util.Log
@@ -85,7 +85,7 @@ class MainActivity : FlutterActivity() {
     }
 
     private companion object {
-        const val CHANNEL_NAME = "com.nolumia.rewardpoints/share"
+        const val CHANNEL_NAME = "com.nolumia.rewardpoints.app/share"
         const val SHARE_FILE_METHOD = "shareFile"
         const val NATIVE_SHARE_TAG = "NativeShare"
     }

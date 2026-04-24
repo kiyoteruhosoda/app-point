@@ -21,7 +21,7 @@ abstract interface class NativeShareGateway {
 
 final class AndroidMethodChannelShareGateway implements NativeShareGateway {
   static const MethodChannel _channel = MethodChannel(
-    'com.nolumia.rewardpoints/share',
+    'com.nolumia.rewardpoints.app/share',
   );
 
   @override
